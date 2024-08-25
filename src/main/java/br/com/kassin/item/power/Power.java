@@ -1,8 +1,9 @@
-package br.com.kassin.power;
+package br.com.kassin.item.power;
+
+import org.bukkit.entity.Entity;
 
 public interface Power {
 
-    default void wormHammerPower(){}
-
+    default void wormHammerPower(final Entity entity){}
 
 }

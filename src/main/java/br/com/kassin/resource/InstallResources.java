@@ -1,4 +1,4 @@
-package br.com.kassin;
+package br.com.kassin.resource;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,7 +10,7 @@ public final class InstallResources implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        player.setResourcePack("https://download.mc-packs.net/pack/7e48c02187b7016debd0ddd6861b95cbc216682e.zip");
+        player.setResourcePack("https://download.mc-packs.net/pack/ddd17ad31de4cabb2b0764c0b233e4834387eabf.zip");
     }
 
 }
