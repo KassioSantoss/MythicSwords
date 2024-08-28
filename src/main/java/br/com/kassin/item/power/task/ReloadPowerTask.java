@@ -7,14 +7,13 @@ import br.com.kassin.utils.Message;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.Queue;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
 public class ReloadPowerTask extends BukkitRunnable {
 
-    private final Queue<UUID> powerQueue = MythicCache.get();
+    private final Set<UUID> powerSet = MythicCache.get();
     private final MythicPowerCooldown cooldown = MythicPowerCooldown.getInstance();
     private final Player player;
 
@@ -31,17 +30,18 @@ public class ReloadPowerTask extends BukkitRunnable {
     public void run() {
         UUID uuid = player.getUniqueId();
 
-        if (powerQueue.contains(uuid)) {
+        if (powerSet.contains(uuid)) {
             loadCount();
             return;
         }
-        powerQueue.remove(uuid);
+        powerSet.remove(uuid);
         cancel();
     }
 
     private void loadCount() {
         if (cooldown.isInCooldown(player)) {
-            Message.ActionBar.send(player, "&6&lPoder recarregando!&6 Faltam " + cooldown.getCooldownTime(player) + "&6 segundos.");
+            Message.ActionBar.send(player, "&6&lPoder recarregando!&6 Faltam "
+                    + cooldown.getCooldownTime(player) + "&6 segundos.");
         }
     }
 

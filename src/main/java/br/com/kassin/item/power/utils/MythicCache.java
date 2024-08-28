@@ -2,19 +2,17 @@ package br.com.kassin.item.power.utils;
 
 import lombok.Getter;
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 public class MythicCache {
-    private static final Queue<UUID> powerQueue = new LinkedList<>();
+    private static final Set<UUID> powerSet = new HashSet<>();
 
     private MythicCache() {
     }
 
-    public static Queue<UUID> get() {
-        return powerQueue;
+    public static Set<UUID> get() {
+        return powerSet;
     }
 
 }
