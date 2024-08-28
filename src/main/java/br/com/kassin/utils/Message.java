@@ -18,7 +18,7 @@ public interface Message {
 
     class ActionBar {
         public static void send(Player player, String message) {
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.translateAlternateColorCodes('&', message)));
         }
     }
 }

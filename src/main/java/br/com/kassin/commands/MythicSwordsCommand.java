@@ -1,6 +1,6 @@
 package br.com.kassin.commands;
 
-import br.com.kassin.item.MythicSwordType;
+import br.com.kassin.item.MythicSword;
 import br.com.kassin.utils.Message;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,7 +9,6 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +25,7 @@ public final class MythicSwordsCommand implements CommandExecutor, TabExecutor {
 
         switch (args[0].toLowerCase()) {
             case "worm_hammer":
-                player.getInventory().addItem(MythicSwordType.WORM_HAMMER.getItem());
+                player.getInventory().addItem(MythicSword.WORM_HAMMER.getItem());
                 Message.Chat.sendMessage(player, "&6 Você recebeu uma Worm Hammer!");
                 break;
         }
@@ -42,7 +41,7 @@ public final class MythicSwordsCommand implements CommandExecutor, TabExecutor {
         return new ArrayList<>();
     }
 
-    private void incorrectCommand(Player player) {
+    private void incorrectCommand(final Player player) {
         Message.Chat.sendMessage(player, "&aCorrect use: /mythicItem <item>");
     }
 }

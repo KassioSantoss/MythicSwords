@@ -1,44 +1,43 @@
 package br.com.kassin.listeners;
 
 import br.com.kassin.MythicSwordsPlugin;
-import br.com.kassin.item.MythicSwordType;
-import br.com.kassin.item.power.MythicPower;
+import br.com.kassin.item.MythicSword;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 
 public final class MythicCombatListener implements Listener {
 
-    private final MythicPower mythicPower;
-
     public MythicCombatListener() {
-        mythicPower = new MythicPower();
     }
 
     @EventHandler
-    public void onDamage(EntityDamageByEntityEvent event) {
+    public void onDamage(PlayerInteractEvent event) {
 
-        if (!(event.getDamager() instanceof Player attacker)) return;
+        if (!event.getAction().isRightClick()) return;
 
-        String itemKey = getItemId(attacker.getInventory().getItemInMainHand());
+        final Player player = event.getPlayer();
+
+        String itemKey = getItemId(player.getInventory().getItemInMainHand());
 
         if (itemKey == null) return;
 
-        if (itemKey.equals(MythicSwordType.WORM_HAMMER.getKey())) {
-            mythicPower.wormHammerPower(attacker);
+        if (itemKey.equals(MythicSword.WORM_HAMMER.getData())) {
+            MythicSword.WORM_HAMMER.use(player);
         }
     }
+
 
     private String getItemId(ItemStack itemStack) {
         if (itemStack.getItemMeta() == null) return null;
 
-        return Arrays.stream(MythicSwordType.values())
-                .map(mythicItemID -> new NamespacedKey(MythicSwordsPlugin.getInstance(), mythicItemID.getKey()))
+        return Arrays.stream(MythicSword.values())
+                .map(mythicItemID -> new NamespacedKey(MythicSwordsPlugin.getInstance(), mythicItemID.getData()))
                 .filter(key -> itemStack.getItemMeta().getPersistentDataContainer().has(key))
                 .findFirst()
                 .map(NamespacedKey::getKey)
