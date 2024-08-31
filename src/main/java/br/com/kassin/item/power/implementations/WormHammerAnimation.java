@@ -1,6 +1,7 @@
 package br.com.kassin.item.power.implementations;
 
 import br.com.kassin.MythicSwordsPlugin;
+import br.com.kassin.item.power.cooldown.MythicPowerCooldown;
 import br.com.kassin.item.power.interfaces.MythicSwordAnimation;
 import br.com.kassin.item.power.utils.MythicList;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @AllArgsConstructor
-public class WormHammerAnimation implements MythicSwordAnimation {
+public final class WormHammerAnimation implements MythicSwordAnimation {
 
     private final Map<UUID, List<Entity>> entityList = MythicList.getEntityList();
     private final double radius;
@@ -23,11 +24,12 @@ public class WormHammerAnimation implements MythicSwordAnimation {
 
     @Override
     public void playAttackAnimation(Player player) {
-        createCircleEffect(player,radius,color);
+        if (MythicPowerCooldown.getInstance().isInCooldown(player)) return;
+        createCircleEffect(player, radius, color);
         impulseEffect(player);
     }
 
-    public void createCircleEffect(final Player player, final double radius, final Color color) {
+    private void createCircleEffect(final Player player, final double radius, final Color color) {
         Particle.DustOptions dustOptions = new Particle.DustOptions(color, 3);
 
         for (int i = 0; i <= 360; i += 5) {
@@ -39,7 +41,8 @@ public class WormHammerAnimation implements MythicSwordAnimation {
         }
     }
 
-    public void impulseEffect(final Player player) {
+    private void impulseEffect(final Player player) {
+
         new BukkitRunnable() {
             int count = 0;
             final List<Entity> entities = entityList.get(player.getUniqueId());
@@ -47,10 +50,9 @@ public class WormHammerAnimation implements MythicSwordAnimation {
 
             @Override
             public void run() {
-
                 if (count >= 50) {
-                    cancel();
                     entityList.get(player.getUniqueId()).clear();
+                    cancel();
                     return;
                 }
 

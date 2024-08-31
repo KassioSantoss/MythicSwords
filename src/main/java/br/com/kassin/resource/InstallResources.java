@@ -10,7 +10,7 @@ public final class InstallResources implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        player.setResourcePack("https://download.mc-packs.net/pack/ddd17ad31de4cabb2b0764c0b233e4834387eabf.zip");
+        player.setResourcePack("https://download.mc-packs.net/pack/f57c2a38b66f7d0b61067a63f69ef278093ff278.zip");
     }
 
 }

@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Getter
-public class ReloadPowerTask extends BukkitRunnable {
+public final class ReloadPowerTask extends BukkitRunnable {
 
     private final Set<UUID> powerSet = MythicCache.get();
     private final MythicPowerCooldown cooldown = MythicPowerCooldown.getInstance();

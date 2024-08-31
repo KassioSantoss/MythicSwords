@@ -1,7 +1,7 @@
 package br.com.kassin;
 
 import br.com.kassin.commands.MythicSwordsCommand;
-import br.com.kassin.listeners.MythicCombatListener;
+import br.com.kassin.listeners.MythicUseItemListener;
 import br.com.kassin.resource.InstallResources;
 import lombok.Getter;
 import org.bukkit.event.Listener;
@@ -21,7 +21,7 @@ public final class MythicSwordsPlugin extends JavaPlugin {
     public void onEnable() {
         registerEvents(
                 new InstallResources(),
-                new MythicCombatListener()
+                new MythicUseItemListener()
         );
 
         registerCommands();

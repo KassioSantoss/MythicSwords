@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,15 +27,19 @@ public final class MythicSwordsCommand implements CommandExecutor, TabExecutor {
                 player.getInventory().addItem(MythicSword.WORM_HAMMER.getItem());
                 Message.Chat.sendMessage(player, "&6 Você recebeu uma Worm Hammer!");
                 break;
-        }
 
+            case "peacekeeper_sword":
+                player.getInventory().addItem(MythicSword.PEACEKEEPER_SWORD.getItem());
+                Message.Chat.sendMessage(player, "&a Você recebeu uma PeaceKeeper Sword!");
+                break;
+        }
         return false;
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public @NotNull List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {
-            return List.of("worm_hammer");
+            return List.of("worm_hammer","peacekeeper_sword");
         }
         return new ArrayList<>();
     }

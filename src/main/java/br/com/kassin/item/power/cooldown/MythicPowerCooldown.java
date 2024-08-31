@@ -3,11 +3,10 @@ package br.com.kassin.item.power.cooldown;
 import br.com.kassin.item.power.utils.MythicCache;
 import br.com.kassin.item.power.task.ReloadPowerTask;
 import org.bukkit.entity.Player;
-
 import java.util.HashMap;
 import java.util.UUID;
 
-public class MythicPowerCooldown {
+public final class MythicPowerCooldown {
     private static MythicPowerCooldown instance;
     private static final HashMap<UUID, Long> cooldowns = new HashMap<>();
 

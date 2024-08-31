@@ -1,21 +1,22 @@
 package br.com.kassin.item.power.implementations;
 
+import br.com.kassin.item.power.cooldown.MythicPowerCooldown;
 import br.com.kassin.item.power.interfaces.MythicSwordPower;
 import br.com.kassin.item.power.utils.MythicList;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class WormHammerPower implements MythicSwordPower {
+public final class WormHammerPower implements MythicSwordPower {
 
     private final Map<UUID, List<Entity>> entityList = MythicList.getEntityList();
 
     @Override
     public void activatePower(Player player) {
+        if (MythicPowerCooldown.getInstance().isInCooldown(player)) return;
         impulse(player);
     }
 
