@@ -11,7 +11,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
@@ -53,9 +52,6 @@ public final class ItemBuilder {
         return new ItemBuilder(material, data);
     }
 
-    /**
-     * Simple util method to manipulate ItemMeta
-     */
     private ItemBuilder consumeMeta(Consumer<ItemMeta> consumer) {
         ItemMeta meta = itemStack.getItemMeta();
         consumer.accept(meta);
@@ -68,9 +64,6 @@ public final class ItemBuilder {
         return this;
     }
 
-    /**
-     * Simple util method to translate all color codes
-     */
     private String translateColorCodes(String text) {
         return ChatColor.translateAlternateColorCodes('&', text);
     }
