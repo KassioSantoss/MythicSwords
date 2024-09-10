@@ -1,4 +1,4 @@
-package br.com.kassin.resource;
+package br.com.kassin.listeners;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

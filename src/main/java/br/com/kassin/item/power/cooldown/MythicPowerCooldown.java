@@ -2,16 +2,20 @@ package br.com.kassin.item.power.cooldown;
 
 import br.com.kassin.item.power.utils.MythicCache;
 import br.com.kassin.item.power.task.ReloadPowerTask;
+import lombok.NoArgsConstructor;
 import org.bukkit.entity.Player;
+
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
-public final class MythicPowerCooldown {
-    private static MythicPowerCooldown instance;
-    private static final HashMap<UUID, Long> cooldowns = new HashMap<>();
+import static lombok.AccessLevel.PRIVATE;
 
-    private MythicPowerCooldown() {
-    }
+@NoArgsConstructor(access = PRIVATE)
+public final class MythicPowerCooldown {
+
+    private static MythicPowerCooldown instance;
+    private static final HashMap<UUID, ItemCooldown> COOLDOWNS = new HashMap<>();
 
     public static MythicPowerCooldown getInstance() {
         if (instance == null) {
@@ -20,31 +24,22 @@ public final class MythicPowerCooldown {
         return instance;
     }
 
-    public boolean isInCooldown(Player player) {
+    public boolean isInCooldown(Player player, String itemId) {
         UUID playerId = player.getUniqueId();
-        if (!cooldowns.containsKey(playerId)) {
-            return false;
-        }
-
-        long cooldownEndTime = cooldowns.get(playerId);
-        return System.currentTimeMillis() < cooldownEndTime;
+        ItemCooldown itemCooldown = COOLDOWNS.get(playerId);
+        return itemCooldown != null && itemCooldown.isInCooldown(itemId);
     }
 
-    public void setCooldown(Player player, int seconds) {
-        long cooldownEndTime = System.currentTimeMillis() + (seconds * 1000L);
-        cooldowns.put(player.getUniqueId(), cooldownEndTime);
-
-        MythicCache.get().add(player.getUniqueId());
-        ReloadPowerTask.start(player);
-    }
-
-    public int getCooldownTime(Player player) {
+    public void setCooldown(Player player, String itemId, int seconds) {
         UUID playerId = player.getUniqueId();
-        if (!cooldowns.containsKey(playerId)) {
-            return 0;
-        }
-
-        long cooldownEndTime = cooldowns.get(playerId);
-        return (int) ((cooldownEndTime - System.currentTimeMillis()) / 1000);
+        ItemCooldown itemCooldown = COOLDOWNS.computeIfAbsent(playerId, k -> new ItemCooldown());
+        itemCooldown.setCooldown(itemId, seconds);
     }
+
+    public int getCooldownTime(Player player, String itemId) {
+        UUID playerId = player.getUniqueId();
+        ItemCooldown itemCooldown = COOLDOWNS.get(playerId);
+        return itemCooldown != null ? itemCooldown.getRemainingTime(itemId) : 0;
+    }
+
 }

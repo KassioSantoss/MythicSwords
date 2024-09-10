@@ -2,12 +2,13 @@ package br.com.kassin.item;
 
 import br.com.kassin.MythicSwordsPlugin;
 import br.com.kassin.item.power.cooldown.MythicPowerCooldown;
-import br.com.kassin.item.power.implementations.PeaceKeeperSwordAnimation;
-import br.com.kassin.item.power.implementations.PeaceKeeperSwordPower;
-import br.com.kassin.item.power.implementations.WormHammerAnimation;
-import br.com.kassin.item.power.implementations.WormHammerPower;
+import br.com.kassin.item.power.impl.PeaceKeeperSwordAnimation;
+import br.com.kassin.item.power.impl.PeaceKeeperSwordPower;
+import br.com.kassin.item.power.impl.WormHammerAnimation;
+import br.com.kassin.item.power.impl.WormHammerPower;
 import br.com.kassin.item.power.interfaces.MythicSwordAnimation;
 import br.com.kassin.item.power.interfaces.MythicSwordPower;
+import br.com.kassin.item.power.task.ReloadPowerTask;
 import br.com.kassin.utils.ItemBuilder;
 import br.com.kassin.utils.Message;
 import lombok.Getter;
@@ -22,11 +23,11 @@ import org.bukkit.persistence.PersistentDataType;
 @Getter
 public enum MythicSword {
 
-    WORM_HAMMER(createSword(new ItemStack(Material.DIAMOND_SWORD),"&6&lWorm &4&lHammer", "worm-hammer", 100),
-            new WormHammerAnimation(5, Color.RED),
+    WORM_HAMMER(createSword(Material.DIAMOND_SWORD, "&6&lWorm &4&lHammer", "worm-hammer", 100),
+            new WormHammerAnimation(5.8, Color.RED),
             new WormHammerPower()),
 
-    PEACEKEEPER_SWORD(createSword(new ItemStack(Material.NETHERITE_SWORD),"&a&lPea&b&lceKee&a&lper &b&lSword", "peacekeeper-sword", 101),
+    PEACEKEEPER_SWORD(createSword(Material.NETHERITE_SWORD, "&a&lPea&b&lceKee&a&lper &b&lSword", "peacekeeper-sword", 101),
             new PeaceKeeperSwordAnimation(),
             new PeaceKeeperSwordPower());
 
@@ -42,18 +43,19 @@ public enum MythicSword {
         this.power = power;
     }
 
-    public void use(final Player player) {
-        if (MythicPowerCooldown.getInstance().isInCooldown(player)) {
+    public void use(final Player player, final int cooldown) {
+        if (MythicPowerCooldown.getInstance().isInCooldown(player, getData(item))) {
             Message.Chat.sendMessage(player, "&6Poder recarregando!");
             return;
         }
         power.activatePower(player);
         animation.playAttackAnimation(player);
-        MythicPowerCooldown.getInstance().setCooldown(player, 10);
+        MythicPowerCooldown.getInstance().setCooldown(player, getData(item), cooldown);
+        ReloadPowerTask.start(player.getName(), getData(item));
     }
 
-    private static ItemStack createSword(final ItemStack item, final String name, final String data, final int modelID) {
-        return ItemBuilder.of(item)
+    private static ItemStack createSword(final Material material, final String name, final String data, final int modelID) {
+        return ItemBuilder.of(new ItemStack(material))
                 .setName(name)
                 .setCustomModelData(modelID)
                 .setItemMetaData(data)

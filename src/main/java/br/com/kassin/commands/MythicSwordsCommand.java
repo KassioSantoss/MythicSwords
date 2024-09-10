@@ -8,8 +8,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class MythicSwordsCommand implements CommandExecutor, TabExecutor {
 
@@ -22,24 +25,36 @@ public final class MythicSwordsCommand implements CommandExecutor, TabExecutor {
             return true;
         }
 
-        switch (args[0].toLowerCase()) {
-            case "worm_hammer":
-                player.getInventory().addItem(MythicSword.WORM_HAMMER.getItem());
-                Message.Chat.sendMessage(player, "&6 Você recebeu uma Worm Hammer!");
-                break;
+        try {
+            MythicSword mythicType = MythicSword.valueOf(args[0].toUpperCase());
 
-            case "peacekeeper_sword":
-                player.getInventory().addItem(MythicSword.PEACEKEEPER_SWORD.getItem());
-                Message.Chat.sendMessage(player, "&a Você recebeu uma PeaceKeeper Sword!");
-                break;
+            System.out.println(mythicType);
+
+            switch (mythicType) {
+                case WORM_HAMMER:
+                    player.getInventory().addItem(MythicSword.WORM_HAMMER.getItem());
+                    Message.Chat.sendMessage(player, "&6 Você recebeu uma Worm Hammer!");
+                    break;
+
+                case PEACEKEEPER_SWORD:
+                    player.getInventory().addItem(MythicSword.PEACEKEEPER_SWORD.getItem());
+                    Message.Chat.sendMessage(player, "&a Você recebeu uma PeaceKeeper Sword!");
+                    break;
+            }
+        } catch (IllegalArgumentException e) {
+            Message.Chat.sendMessage(player, "&4Item não encontrado.");
         }
         return false;
     }
 
     @Override
-    public @NotNull List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public @NotNull List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command
+            command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {
-            return List.of("worm_hammer","peacekeeper_sword");
+            return Arrays.stream(MythicSword.values())
+                    .map(MythicSword::name)
+                    .map(String::toUpperCase)
+                    .collect(Collectors.toList());
         }
         return new ArrayList<>();
     }

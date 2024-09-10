@@ -21,4 +21,5 @@ public interface Message {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.translateAlternateColorCodes('&', message)));
         }
     }
+
 }

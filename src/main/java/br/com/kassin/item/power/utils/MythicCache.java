@@ -1,24 +1,20 @@
 package br.com.kassin.item.power.utils;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.bukkit.Location;
+
 import java.util.*;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class MythicCache {
-    private static final Set<UUID> powerSet = new HashSet<>();
     @Getter
-    private static final Map<UUID, Location> locationMap = new HashMap<>();
-
-    private MythicCache() {
-    }
-
-    public static Set<UUID> get() {
-        return powerSet;
-    }
+    private static final Map<UUID, Location> INITIAL_USE_LOCATION_MAP = new HashMap<>();
 
     public static Location getLocation(UUID uuid) {
-        return locationMap.get(uuid);
+        return INITIAL_USE_LOCATION_MAP.get(uuid);
     }
 
 }
